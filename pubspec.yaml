@@ -11,7 +11,7 @@ dependencies:
   js: ^0.6.1+1
   meta: ^1.1.8
   node_interop: ^2.0.2
-  node_io: ^2.0.0
+  node_io: ^2.1.0
   node_http:
     git: # temporary until NNBD approved for main package
       url: https://github.com/SupposedlySam/node-interop.git
