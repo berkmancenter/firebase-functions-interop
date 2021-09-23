@@ -19,8 +19,10 @@ abstract class RuntimeOptions {
   ///
   /// Valid values are: '128MB', '256MB', '512MB', '1GB', and '2GB'.
   external String get memory;
+  
+  external int get minInstances;
 
-  external factory RuntimeOptions({int timeoutSeconds, String memory});
+  external factory RuntimeOptions({int timeoutSeconds, String memory, int minInstances});
 }
 
 @JS()
