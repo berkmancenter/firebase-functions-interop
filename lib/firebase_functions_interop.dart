@@ -373,6 +373,9 @@ class PubsubFunctions {
 
   TopicBuilder topic(String path) =>
       new TopicBuilder._(_functions.pubsub.topic(path));
+
+  ScheduleBuilder schedule(String expression) =>
+      new ScheduleBuilder._(_functions.pubsub.schedule(expression));
 }
 
 class TopicBuilder {
