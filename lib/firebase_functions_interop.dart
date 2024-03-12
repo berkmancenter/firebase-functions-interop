@@ -401,6 +401,31 @@ class TopicBuilder {
   }
 }
 
+class ScheduleBuilder {
+  @protected
+  final js.ScheduleBuilder nativeInstance;
+
+  ScheduleBuilder._(this.nativeInstance);
+
+  /// Event handler that fires every time a schedule occurs.
+  js.CloudFunction onRun(DataEventHandler<Null> handler) {
+    dynamic wrapper(js.EventContext jsContext) =>
+        _handleEvent(jsContext, handler);
+    return nativeInstance.onRun(allowInterop(wrapper));
+  }
+
+  dynamic _handleEvent(js.EventContext jsContext,
+      DataEventHandler<Null> handler) {
+    final context = new EventContext(jsContext);
+    var result = handler(null, context);
+    if (result is Future) {
+      return futureToPromise(result);
+    }
+    // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
+    return 0;
+  }
+}
+
 class Message {
   Message(js.Message this.nativeInstance);
 
