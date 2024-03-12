@@ -33,7 +33,7 @@ library firebase_functions_interop;
 import 'dart:async';
 import 'dart:js';
 
-import 'package:firebase_admin_interop/firebase_admin_interop.dart';
+import 'package:firebase_functions_interop/src/bindings.dart';
 import 'package:meta/meta.dart';
 import 'package:node_interop/http.dart';
 import 'package:node_interop/node.dart';
@@ -42,7 +42,6 @@ import 'package:node_interop/util.dart';
 import 'src/bindings.dart' as js;
 import 'src/express.dart';
 
-export 'package:firebase_admin_interop/firebase_admin_interop.dart';
 export 'package:node_io/node_io.dart' show HttpRequest, HttpResponse;
 
 export 'src/bindings.dart'
@@ -149,6 +148,14 @@ class Config {
     }
     return value;
   }
+}
+
+class DataSnapshot<T> {
+  DataSnapshot(data);
+}
+
+class DocumentSnapshot {
+
 }
 
 /// Container for events that change state, such as Realtime Database or
@@ -337,29 +344,30 @@ class DocumentBuilder {
     return nativeInstance.onWrite(allowInterop(wrapper));
   }
 
+  // TODO(agora): Fix below two functions
   dynamic _handleEvent(js.DocumentSnapshot data, js.EventContext jsContext,
       DataEventHandler<DocumentSnapshot> handler) {
-    final firestore = new Firestore(data.ref.firestore);
+    /*final firestore = new Firestore(data.ref.firestore);
     final snapshot = new DocumentSnapshot(data, firestore);
     final context = new EventContext(jsContext);
     var result = handler(snapshot, context);
     if (result is Future) {
       return futureToPromise(result);
-    }
+    }*/
     // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
     return 0;
   }
 
   dynamic _handleChangeEvent(js.Change<js.DocumentSnapshot> data,
       js.EventContext jsContext, ChangeEventHandler<DocumentSnapshot> handler) {
-    final firestore = new Firestore(data.after.ref.firestore);
+    /*final firestore = new Firestore(data.after.ref.firestore);
     var after = new DocumentSnapshot(data.after, firestore);
     var before = new DocumentSnapshot(data.before, firestore);
     var context = new EventContext(jsContext);
     var result = handler(new Change<DocumentSnapshot>(after, before), context);
     if (result is Future) {
       return futureToPromise(result);
-    }
+    }*/
     // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
     return 0;
   }
