@@ -1,5 +1,6 @@
 part of firebase_functions_interop;
 
+
 /// To send an error from an HTTPS Callable function to a client, throw an
 /// instance of this class from your handler function.
 ///
@@ -98,14 +99,14 @@ class HttpsError {
 class CallableContext {
   /// The uid from decoding and verifying a Firebase Auth ID token. Value may
   /// be `null`.
-  final String authUid;
+  final String? authUid;
 
   /// The result of decoding and verifying a Firebase Auth ID token. Value may
   /// be `null`.
-  final DecodedIdToken authToken;
+  final DecodedIdToken? authToken;
 
   /// An unverified token for a Firebase Instance ID.
-  final String instanceIdToken;
+  final String? instanceIdToken;
 
   CallableContext(this.authUid, this.authToken, this.instanceIdToken);
 }

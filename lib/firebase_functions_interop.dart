@@ -33,7 +33,7 @@ library firebase_functions_interop;
 import 'dart:async';
 import 'dart:js';
 
-import 'package:firebase_functions_interop/src/bindings.dart';
+import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:meta/meta.dart';
 import 'package:node_interop/http.dart';
 import 'package:node_interop/node.dart';
@@ -150,13 +150,6 @@ class Config {
   }
 }
 
-class DataSnapshot<T> {
-  DataSnapshot(data);
-}
-
-class DocumentSnapshot {
-
-}
 
 /// Container for events that change state, such as Realtime Database or
 /// Cloud Firestore `onWrite` and `onUpdate`.
@@ -380,9 +373,6 @@ class PubsubFunctions {
 
   TopicBuilder topic(String path) =>
       new TopicBuilder._(_functions.pubsub.topic(path));
-
-  ScheduleBuilder schedule(String expression) =>
-      new ScheduleBuilder._(_functions.pubsub.schedule(expression));
 }
 
 class TopicBuilder {
@@ -403,31 +393,6 @@ class TopicBuilder {
     final message = new Message(jsData);
     final context = new EventContext(jsContext);
     var result = handler(message, context);
-    if (result is Future) {
-      return futureToPromise(result);
-    }
-    // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
-    return 0;
-  }
-}
-
-class ScheduleBuilder {
-  @protected
-  final js.ScheduleBuilder nativeInstance;
-
-  ScheduleBuilder._(this.nativeInstance);
-
-  /// Event handler that fires every time a schedule occurs.
-  js.CloudFunction onRun(DataEventHandler<Message> handler) {
-    dynamic wrapper(js.EventContext jsContext) =>
-        _handleEvent(jsContext, handler);
-    return nativeInstance.onRun(allowInterop(wrapper));
-  }
-    
-  dynamic _handleEvent(js.EventContext jsContext,
-      DataEventHandler<Null> handler) {
-    final context = new EventContext(jsContext);
-    var result = handler(null, context);
     if (result is Future) {
       return futureToPromise(result);
     }
@@ -579,7 +544,7 @@ class ObjectMetadata {
   String get crc32c => nativeInstance.crc32c;
 
   /// Customer-supplied encryption key.
-  CustomerEncryption get customerEncryption {
+  CustomerEncryption? get customerEncryption {
     final dartified = dartify(nativeInstance.customerEncryption);
     if (dartified == null) return null;
     return new CustomerEncryption(
@@ -632,19 +597,19 @@ class ObjectMetadata {
   String get storageClass => nativeInstance.storageClass;
 
   /// The creation time of this object.
-  DateTime get timeCreated => nativeInstance.timeCreated == null
+  DateTime? get timeCreated => nativeInstance.timeCreated == null
       ? null
       : DateTime.parse(nativeInstance.timeCreated);
 
   /// The deletion time of this object.
   ///
   /// Returned only if this version of the object has been deleted.
-  DateTime get timeDeleted => nativeInstance.timeDeleted == null
+  DateTime? get timeDeleted => nativeInstance.timeDeleted == null
       ? null
       : DateTime.parse(nativeInstance.timeDeleted);
 
   /// The modification time of this object.
-  DateTime get updated => nativeInstance.updated == null
+  DateTime? get updated => nativeInstance.updated == null
       ? null
       : DateTime.parse(nativeInstance.updated);
 }
@@ -653,7 +618,7 @@ class CustomerEncryption {
   final String encryptionAlgorithm;
   final String keySha256;
 
-  CustomerEncryption({this.encryptionAlgorithm, this.keySha256});
+  CustomerEncryption({required this.encryptionAlgorithm, required this.keySha256});
 }
 
 /// Namespace for Firebase Authentication functions.
