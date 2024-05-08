@@ -337,30 +337,29 @@ class DocumentBuilder {
     return nativeInstance.onWrite(allowInterop(wrapper));
   }
 
-  // TODO(agora): Fix below two functions
   dynamic _handleEvent(js.DocumentSnapshot data, js.EventContext jsContext,
       DataEventHandler<DocumentSnapshot> handler) {
-    /*final firestore = new Firestore(data.ref.firestore);
+    final firestore = new Firestore(data.ref.firestore);
     final snapshot = new DocumentSnapshot(data, firestore);
     final context = new EventContext(jsContext);
     var result = handler(snapshot, context);
     if (result is Future) {
       return futureToPromise(result);
-    }*/
+    }
     // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
     return 0;
   }
 
   dynamic _handleChangeEvent(js.Change<js.DocumentSnapshot> data,
       js.EventContext jsContext, ChangeEventHandler<DocumentSnapshot> handler) {
-    /*final firestore = new Firestore(data.after.ref.firestore);
+    final firestore = new Firestore(data.after.ref.firestore);
     var after = new DocumentSnapshot(data.after, firestore);
     var before = new DocumentSnapshot(data.before, firestore);
     var context = new EventContext(jsContext);
     var result = handler(new Change<DocumentSnapshot>(after, before), context);
     if (result is Future) {
       return futureToPromise(result);
-    }*/
+    }
     // See: https://stackoverflow.com/questions/47128440/google-firebase-errorfunction-returned-undefined-expected-promise-or-value
     return 0;
   }
