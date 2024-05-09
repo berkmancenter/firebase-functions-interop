@@ -149,9 +149,18 @@ class HttpsFunctions {
       FutureOr<dynamic> handler(dynamic data, CallableContext context)) {
     dynamic jsHandler(data, js.CallableContext context) {
       var auth = context.auth;
+
+      String? uid;
+      DecodedIdToken? token;
+      try {
+        uid = auth?.uid;
+        token = auth?.token;
+      } catch (e) {
+        // Due to JS interop issues this will throw if auth object is null.
+      }
       var ctx = new CallableContext(
-        auth?.uid,
-        auth?.token,
+        uid,
+        token,
         context.instanceIdToken,
       );
       try {
