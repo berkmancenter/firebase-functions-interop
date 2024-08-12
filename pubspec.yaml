@@ -14,7 +14,7 @@ dependencies:
   node_io: ^2.3.0
   firebase_admin_interop:
     git:
-      url: https://github.com/dannnnthemannnn/firebase-admin-interop.git
+      url: https://github.com/berkmancenter/firebase-admin-interop.git
 
 dev_dependencies:
   test: ^1.24.3
